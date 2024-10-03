@@ -26,6 +26,12 @@ def handle_command(paths: [str], command: str, args: [str]):
         sys.stdout.write(f"{to_echo}\n")
     elif command == 'pwd':
         sys.stdout.write(f"{os.getcwd()}\n")
+    elif command == 'cd':
+        path = args[0]
+        if os.path.isdir(f"{path}"):
+            os.chdir(f"{path}")
+        else:
+            sys.stdout.write(f"cd: {path}: No such file or directory\n")
     elif command == 'type':
         handle_type_command(paths, args[0])
     else:
