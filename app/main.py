@@ -13,6 +13,8 @@ def main():
 
         if command_and_params[0] == 'exit':
             sys.exit(int(command_and_params[1]))
+        elif command_and_params[0] == 'echo':
+            print(" ".join(command_and_params[1:]))
         else:
             print(f"{command}: not found")
 
