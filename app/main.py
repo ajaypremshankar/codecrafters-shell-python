@@ -1,6 +1,6 @@
 import sys, os, subprocess
 
-supported_commands = ["exit", "echo", "type"]
+supported_commands = ["exit", "echo", "type", "pwd"]
 path_str = os.environ.get("PATH")
 def main():
     while True:
@@ -24,6 +24,8 @@ def handle_command(paths: [str], command: str, args: [str]):
     elif command == 'echo':
         to_echo = " ".join(args)
         sys.stdout.write(f"{to_echo}\n")
+    elif command == 'pwd':
+        sys.stdout.write(f"{os.getcwd()}\n")
     elif command == 'type':
         handle_type_command(paths, args[0])
     else:
