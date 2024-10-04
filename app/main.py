@@ -2,6 +2,7 @@ import sys, os, subprocess
 
 supported_commands = ["exit", "echo", "type", "pwd"]
 path_str = os.environ.get("PATH")
+
 def main():
     while True:
         sys.stdout.write("$ ")
@@ -22,18 +23,12 @@ def handle_command(paths: [str], command: str, args: [str]):
     if command == 'exit':
         sys.exit(int(args[0]))
     elif command == 'echo':
-        to_echo = " ".join(args)
-        sys.stdout.write(f"{to_echo}\n")
+        what_to_echo = " ".join(args)
+        sys.stdout.write(f"{what_to_echo}\n")
     elif command == 'pwd':
         sys.stdout.write(f"{os.getcwd()}\n")
     elif command == 'cd':
-        path = args[0]
-        if path == '~':
-            os.chdir(f"{os.path.expanduser(path)}")
-        elif os.path.isdir(f"{path}"):
-            os.chdir(f"{path}")
-        else:
-            sys.stdout.write(f"cd: {path}: No such file or directory\n")
+        handle_cd_command(args)
     elif command == 'type':
         handle_type_command(paths, args[0])
     else:
@@ -45,6 +40,14 @@ def handle_command(paths: [str], command: str, args: [str]):
             result = subprocess.run([custom_command, *args], capture_output=True, text=True)
             sys.stdout.write(result.stdout)
 
+def handle_cd_command(args: [str]):
+    path = args[0]
+    if path == '~':
+        os.chdir(f"{os.path.expanduser(path)}")
+    elif os.path.isdir(f"{path}"):
+        os.chdir(f"{path}")
+    else:
+        sys.stdout.write(f"cd: {path}: No such file or directory\n")
 
 def handle_type_command(paths: [str], target_command: str):
     command_path_key = None
@@ -67,5 +70,6 @@ def get_custom_command_if_exists(command: str):
             if os.path.isfile(f"{path}/{command}"):
                 return f"{path}/{command}"
     return None
+
 if __name__ == "__main__":
     main()
