@@ -98,7 +98,7 @@ def strip_arg(full_arg: str):
                 args.append(arg)
                 arg = ""
 
-        elif ch == "'":
+        elif ch == "'" and not in_double_quote:
             if in_single_quote:
                 args.append(arg)
                 arg = ""
