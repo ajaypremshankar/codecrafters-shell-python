@@ -97,6 +97,9 @@ def strip_arg(full_arg: str):
         if last_backslash:
             arg += ch
             last_backslash = False
+        elif ch == "\\" and in_single_quote:
+            arg += ch
+            last_backslash = False
         elif ch == "\\" and not in_single_quote and not in_double_quote:
             last_backslash = True
         elif ch == " " and not in_single_quote and not in_double_quote:
@@ -112,7 +115,7 @@ def strip_arg(full_arg: str):
             else:
                 in_single_quote = True
 
-        elif ch == "\"":
+        elif ch == "\"" and not in_single_quote:
             if in_double_quote:
                 args.append(arg)
                 arg = ""
