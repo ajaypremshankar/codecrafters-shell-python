@@ -89,11 +89,17 @@ def parse_command_and_args(raw_args: str):
 def strip_arg(full_arg: str):
     in_single_quote = False
     in_double_quote = False
+    last_backslash = False
 
     args = []
     arg = ""
     for ch in full_arg:
-        if ch == " " and not in_single_quote and not in_double_quote:
+        if last_backslash:
+            arg += ch
+            last_backslash = False
+        elif ch == "\\" and not in_single_quote and not in_double_quote:
+            last_backslash = True
+        elif ch == " " and not in_single_quote and not in_double_quote:
             if arg:
                 args.append(arg)
                 arg = ""
